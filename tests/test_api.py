@@ -9,6 +9,35 @@ def test_health_check():
     assert response.status_code == 200
     assert response.json()["status"] == "healthy"
 
+def test_auth_endpoints_validation():
+    # 1. Invalid email
+    bad_resp = client.post("/api/auth/login", json={"email": "not-an-email", "password": "valid_pass_123"})
+    assert bad_resp.status_code == 400
+    assert "Invalid institutional email" in bad_resp.json()["detail"]
+
+    # 2. Short password
+    short_resp = client.post("/api/auth/login", json={"email": "prof@univ.edu", "password": "123"})
+    assert short_resp.status_code == 400
+
+    # 3. Valid login
+    ok_resp = client.post("/api/auth/login", json={
+        "email": "dr.vance@mit.edu",
+        "password": "secure_researcher_pass",
+        "role": "Lead Researcher",
+        "name": "Dr. Alex Vance"
+    })
+    assert ok_resp.status_code == 200
+    data = ok_resp.json()
+    assert "token" in data
+    assert data["role"] == "Lead Researcher"
+    assert data["name"] == "Dr. Alex Vance"
+    token = data["token"]
+
+    # 4. Verify /me endpoint
+    me_resp = client.get("/api/auth/me", headers={"Authorization": f"Bearer {token}"})
+    assert me_resp.status_code == 200
+    assert me_resp.json()["email"] == "dr.vance@mit.edu"
+
 def test_benchmark_and_preview_workflow():
     # Load benchmark dataset
     resp = client.post("/api/datasets/benchmark", json={"benchmark_key": "wine_quality"})

@@ -3,88 +3,159 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 export interface User {
+  id: string;
   name: string;
   email: string;
   role: "Lead Researcher" | "Evaluator / Reviewer" | "Graduate Student" | "Professor";
   institution: string;
   avatarSeed: string;
+  token: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, role?: User["role"], name?: string) => void;
+  isLoading: boolean;
+  login: (
+    email: string,
+    password: string,
+    role?: User["role"],
+    name?: string,
+    institution?: string
+  ) => Promise<void>;
   logout: () => void;
-  quickLogin: (preset: "researcher" | "evaluator") => void;
+  quickLogin: (preset: "researcher" | "evaluator") => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
-  login: () => {},
+  isLoading: true,
+  login: async () => {},
   logout: () => {},
-  quickLogin: () => {},
+  quickLogin: async () => {},
 });
+
+export function setAuthCookie(token: string) {
+  if (typeof document !== "undefined") {
+    document.cookie = `rl_session_token=${encodeURIComponent(token)}; path=/; max-age=86400; SameSite=Lax`;
+  }
+}
+
+export function clearAuthCookie() {
+  if (typeof document !== "undefined") {
+    document.cookie = "rl_session_token=; path=/; max-age=0; SameSite=Lax";
+  }
+}
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check localStorage
-    const saved = localStorage.getItem("robust_learning_auth_user");
-    if (saved) {
-      try {
-        setUser(JSON.parse(saved));
-      } catch (_) {}
-    } else {
-      // Default to guest or auto-login as Lead Researcher for evaluation
-      const defaultUser: User = {
-        name: "Dr. Alex Vance",
-        email: "alex.vance@academic-lab.edu",
-        role: "Lead Researcher",
-        institution: "Machine Learning Robustness Laboratory",
-        avatarSeed: "AV",
-      };
-      setUser(defaultUser);
-      localStorage.setItem("robust_learning_auth_user", JSON.stringify(defaultUser));
+    // Safely restore persisted session on client mount
+    try {
+      const savedUser = localStorage.getItem("robust_learning_auth_user");
+      const savedToken = localStorage.getItem("robust_learning_auth_token");
+      if (savedUser && savedToken) {
+        const parsed = JSON.parse(savedUser);
+        if (parsed && parsed.email && parsed.token) {
+          setUser(parsed);
+          setAuthCookie(parsed.token);
+        } else {
+          clearAuthCookie();
+        }
+      } else {
+        clearAuthCookie();
+      }
+    } catch (_) {
+      localStorage.removeItem("robust_learning_auth_user");
+      localStorage.removeItem("robust_learning_auth_token");
+      clearAuthCookie();
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
-  const login = (
+  const login = async (
     email: string,
+    password: string,
     role: User["role"] = "Lead Researcher",
-    name = "ML Researcher"
+    name?: string,
+    institution?: string
   ) => {
-    const newUser: User = {
-      name,
-      email,
-      role,
-      institution: "Robust Learning Laboratory",
-      avatarSeed: name.substring(0, 2).toUpperCase(),
+    // Real validation
+    if (!email || !email.includes("@")) {
+      throw new Error("A valid academic or institutional email address is required.");
+    }
+    if (!password || password.trim().length < 6) {
+      throw new Error("Password must be at least 6 characters.");
+    }
+
+    // Call backend auth API
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email.trim(),
+        password: password.trim(),
+        role,
+        name: name || undefined,
+        institution: institution || undefined,
+      }),
+    });
+
+    if (!res.ok) {
+      let msg = "Authentication failed.";
+      try {
+        const err = await res.json();
+        if (err.detail) msg = err.detail;
+      } catch (_) {}
+      throw new Error(msg);
+    }
+
+    const data = await res.json();
+    const authenticatedUser: User = {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      institution: data.institution,
+      avatarSeed: data.avatar_seed || "RL",
+      token: data.token,
     };
-    setUser(newUser);
-    localStorage.setItem("robust_learning_auth_user", JSON.stringify(newUser));
+
+    setUser(authenticatedUser);
+    setAuthCookie(authenticatedUser.token);
+    localStorage.setItem("robust_learning_auth_user", JSON.stringify(authenticatedUser));
+    localStorage.setItem("robust_learning_auth_token", authenticatedUser.token);
   };
 
-  const quickLogin = (preset: "researcher" | "evaluator") => {
+  const quickLogin = async (preset: "researcher" | "evaluator") => {
     if (preset === "evaluator") {
-      login(
-        "evaluator@review-board.org",
+      await login(
+        "eleanor.bennett@academic-evaluators.org",
+        "evaluator2026!",
         "Evaluator / Reviewer",
-        "Prof. Eleanor Bennett"
+        "Prof. Eleanor Bennett",
+        "Department of Computer Science Review Board"
       );
     } else {
-      login(
+      await login(
         "alex.vance@academic-lab.edu",
+        "researcher2026!",
         "Lead Researcher",
-        "Dr. Alex Vance"
+        "Dr. Alex Vance",
+        "Machine Learning Robustness Laboratory"
       );
     }
   };
 
   const logout = () => {
     setUser(null);
+    clearAuthCookie();
     localStorage.removeItem("robust_learning_auth_user");
+    localStorage.removeItem("robust_learning_auth_token");
   };
 
   return (
@@ -92,6 +163,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       value={{
         user,
         isAuthenticated: !!user,
+        isLoading,
         login,
         logout,
         quickLogin,

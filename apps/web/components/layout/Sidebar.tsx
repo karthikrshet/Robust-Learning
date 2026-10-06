@@ -9,8 +9,6 @@ import {
   LineChart,
   BookOpen,
   LogOut,
-  User,
-  ShieldCheck,
   Home
 } from "lucide-react";
 import { useState, useEffect } from "react";
@@ -22,9 +20,11 @@ export function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, logout } = useAuth();
+  const [mounted, setMounted] = useState(false);
   const [isBackendHealthy, setIsBackendHealthy] = useState<boolean | null>(null);
 
   useEffect(() => {
+    setMounted(true);
     api.checkHealth()
       .then(() => setIsBackendHealthy(true))
       .catch(() => setIsBackendHealthy(false));
@@ -133,9 +133,11 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* User Session & Status Footer */}
-      <div className="p-4 border-t border-slate-200 bg-slate-50/50 space-y-3">
-        {user ? (
+      {/* User Session & Status Footer with Hydration Protection */}
+      <div className="p-4 border-t border-slate-200 bg-slate-50/50 space-y-3" suppressHydrationWarning>
+        {!mounted ? (
+          <div className="h-9 rounded-lg bg-slate-200/50 animate-pulse" />
+        ) : user ? (
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
@@ -153,7 +155,7 @@ export function Sidebar() {
 
             <button
               onClick={handleLogout}
-              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors cursor-pointer"
               title="Sign out of session"
             >
               <LogOut className="w-4 h-4" />
