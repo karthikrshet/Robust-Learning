@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import "./globals.css";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { AuthProvider } from "@/lib/auth";
+import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
   title: "Robust Learning Lab | Academic Classification Platform",
@@ -15,13 +16,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased flex">
-        <Suspense fallback={<div className="w-64 bg-white border-r border-slate-200 h-screen fixed left-0 top-0" />}>
-          <Sidebar />
-        </Suspense>
-        <div className="flex-1 ml-64 flex flex-col min-h-screen">
-          <main className="flex-1 pb-16">{children}</main>
-        </div>
+      <body className="min-h-screen bg-slate-50 text-slate-900 antialiased">
+        <AuthProvider>
+          <Suspense fallback={<div className="p-8 text-center text-xs text-slate-400">Loading Application...</div>}>
+            <AppShell>{children}</AppShell>
+          </Suspense>
+        </AuthProvider>
       </body>
     </html>
   );

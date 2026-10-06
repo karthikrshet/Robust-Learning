@@ -1,23 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   Database,
   FlaskConical,
   LineChart,
   BookOpen,
-  Upload,
-  PlusCircle,
+  LogOut,
+  User,
   ShieldCheck,
-  Activity
+  Home
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { api } from "@/lib/api";
+import { Logo } from "@/components/layout/Logo";
+import { useAuth } from "@/lib/auth";
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, logout } = useAuth();
   const [isBackendHealthy, setIsBackendHealthy] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -26,12 +30,23 @@ export function Sidebar() {
       .catch(() => setIsBackendHealthy(false));
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    router.push("/login");
+  };
+
   const navItems = [
     {
-      title: "Dashboard",
+      title: "Landing Overview",
       href: "/",
-      icon: LayoutDashboard,
+      icon: Home,
       active: pathname === "/",
+    },
+    {
+      title: "Lab Dashboard",
+      href: "/dashboard",
+      icon: LayoutDashboard,
+      active: pathname === "/dashboard",
     },
     {
       title: "Datasets",
@@ -40,7 +55,7 @@ export function Sidebar() {
       active: pathname.startsWith("/datasets"),
       subItems: [
         { title: "All Datasets", href: "/datasets" },
-        { title: "Upload / Load", href: "/datasets?tab=upload" },
+        { title: "Upload / Load", href: "/datasets" },
       ],
     },
     {
@@ -70,21 +85,9 @@ export function Sidebar() {
   return (
     <aside className="w-64 bg-white border-r border-slate-200 flex flex-col justify-between h-screen fixed left-0 top-0 z-30 select-none">
       <div>
-        {/* Brand Header */}
+        {/* Brand Header with Logo */}
         <div className="h-16 flex items-center px-6 border-b border-slate-200">
-          <Link href="/" className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-blue-600 flex items-center justify-center text-white shadow-sm">
-              <ShieldCheck className="w-5 h-5" />
-            </div>
-            <div>
-              <span className="font-bold text-slate-900 tracking-tight text-base block leading-tight">
-                Robust Learning
-              </span>
-              <span className="text-[11px] text-blue-600 font-semibold tracking-wider uppercase">
-                Academic Lab
-              </span>
-            </div>
-          </Link>
+          <Logo size="md" href="/" />
         </div>
 
         {/* Navigation Links */}
@@ -130,9 +133,42 @@ export function Sidebar() {
         </nav>
       </div>
 
-      {/* System Status Footer */}
-      <div className="p-4 border-t border-slate-200 bg-slate-50/50">
-        <div className="flex items-center justify-between">
+      {/* User Session & Status Footer */}
+      <div className="p-4 border-t border-slate-200 bg-slate-50/50 space-y-3">
+        {user ? (
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-xs shrink-0 shadow-xs">
+                {user.avatarSeed}
+              </div>
+              <div className="min-w-0">
+                <span className="text-xs font-bold text-slate-900 block truncate leading-tight">
+                  {user.name}
+                </span>
+                <span className="text-[10px] text-blue-700 font-medium block truncate">
+                  {user.role}
+                </span>
+              </div>
+            </div>
+
+            <button
+              onClick={handleLogout}
+              className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+              title="Sign out of session"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          </div>
+        ) : (
+          <Link
+            href="/login"
+            className="w-full py-1.5 px-3 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold text-center block transition-colors"
+          >
+            Researcher Sign In
+          </Link>
+        )}
+
+        <div className="flex items-center justify-between pt-1 border-t border-slate-200/60">
           <div className="flex items-center gap-2">
             <span
               className={`w-2 h-2 rounded-full ${
@@ -143,11 +179,11 @@ export function Sidebar() {
                   : "bg-amber-400"
               }`}
             />
-            <span className="text-xs text-slate-600 font-medium">
+            <span className="text-[11px] text-slate-600 font-medium">
               {isBackendHealthy === true
-                ? "API Active"
+                ? "API Connected"
                 : isBackendHealthy === false
-                ? "API Disconnected"
+                ? "API Offline"
                 : "Connecting..."}
             </span>
           </div>
