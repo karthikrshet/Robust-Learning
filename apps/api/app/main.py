@@ -11,7 +11,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    description="Academic Machine Learning Platform for Robust Learning Under Label Noise",
+    description="Production Machine Learning Platform for Robust Learning Under Label Noise",
     docs_url="/docs",
     redoc_url="/redoc"
 )

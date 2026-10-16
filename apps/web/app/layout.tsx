@@ -5,7 +5,7 @@ import { AuthProvider } from "@/lib/auth";
 import { AppShell } from "@/components/layout/AppShell";
 
 export const metadata: Metadata = {
-  title: "Robust Learning Lab | Academic Classification Platform",
+  title: "Robust Learning Platform | ML Under Label Noise",
   description: "Robust Learning Under Label Noise for Real-World Classification Problems",
 };
 

@@ -157,7 +157,7 @@ export default function DatasetsPage() {
               Peer-Reviewed Benchmarks
             </h3>
             <p className="text-xs text-slate-500">
-              One-click access to standard classification benchmarks with verified academic provenance.
+              One-click access to standard classification benchmarks with verified provenance.
             </p>
 
             <div className="space-y-2 pt-1">

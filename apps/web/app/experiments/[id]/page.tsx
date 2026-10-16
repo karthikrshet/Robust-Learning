@@ -229,12 +229,12 @@ export default function ExperimentDetailPage({ params }: { params: Promise<{ id:
               />
             </div>
 
-            {/* Academic Findings Card */}
+            {/* Empirical Findings Card */}
             {results.findings && results.findings.length > 0 && (
               <div className="bg-white rounded-xl border border-blue-200 p-6 shadow-xs space-y-3">
                 <div className="flex items-center gap-2 text-blue-900 font-bold text-sm">
                   <Sparkles className="w-4 h-4 text-blue-600" />
-                  Academic Findings & Discussion (Non-Fabricated Evidence)
+                  Empirical Findings &amp; Statistical Discussion
                 </div>
 
                 <div className="space-y-2">
@@ -497,7 +497,7 @@ export default function ExperimentDetailPage({ params }: { params: Promise<{ id:
         )}
       </div>
 
-      {/* Viva Inspection Modal */}
+      {/* Detailed Inspection Modal */}
       <SuspiciousSampleModal
         sample={selectedSampleForModal}
         onClose={() => setSelectedSampleForModal(null)}

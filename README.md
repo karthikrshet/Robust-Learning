@@ -7,8 +7,9 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A complete, production-grade academic machine learning platform designed to study, detect, and mitigate the detrimental effects of label noise in supervised classification datasets. 
+A complete, production-grade machine learning platform designed to benchmark, detect, and mitigate the detrimental effects of label noise in supervised classification datasets. 
 
+Engineered with strict empirical integrity: **no mock data, no fake metrics, no hardcoded charts, and 100% computed results**.
 
 ---
 
@@ -28,7 +29,7 @@ A complete, production-grade academic machine learning platform designed to stud
     - [Robust Learning Models](#robust-learning-models)
 11. [REST API Documentation](#11-rest-api-documentation)
 12. [Publication-Grade PDF Reports](#12-publication-grade-pdf-reports)
-13. [Limitations & Academic Discussion](#13-limitations--academic-discussion)
+13. [Limitations & Technical Discussion](#13-limitations--technical-discussion)
 
 ---
 
@@ -38,7 +39,7 @@ Supervised machine learning algorithms rely critically on high-quality annotated
 
 Standard statistical and deep learning classifiers possess sufficient capacity to memorize corrupted labels. This distorts the learned decision boundary around noisy samples, severely impairing out-of-sample generalization.
 
-This platform provides an end-to-end laboratory where researchers and students can:
+This platform provides an end-to-end laboratory where machine learning engineers and researchers can:
 1. Upload real-world CSV/XLSX datasets or test against authentic peer-reviewed benchmarks.
 2. Formulate controlled noise conditions (0%, 5%, 10%, 20%, 30%, 40%) applied strictly to the training split.
 3. Diagnose suspicious labels via Confident-Learning-inspired out-of-fold probability estimation.
@@ -49,10 +50,10 @@ This platform provides an end-to-end laboratory where researchers and students c
 
 ## 2. Key Architectural Pillars
 
-* **Academic Honesty:** If a baseline classifier outperforms a robust model at low noise levels, the platform truthfully reports that finding. No results are manufactured.
+* **Empirical Honesty:** If a baseline classifier outperforms a robust model at low noise levels, the platform truthfully reports that finding. No results are manufactured.
 * **Leakage-Free Protocol:** Label noise is injected **strictly into the training set**. The holdout validation and test sets remain pristine ground-truth references.
 * **Reproducibility:** Experiments are bound to explicit random seeds, dataset SHA256 hashes, and deterministic splitting. Multi-seed repeats (seeds `[42, 123, 456]`) compute mean and standard deviation.
-* **Separation of Concerns:** ML computations run natively in Python (`scikit-learn`, `numpy`, `scipy`). The frontend is a clean White + Blue research interface built with Next.js and Tailwind CSS (no dark mode).
+* **Separation of Concerns:** ML computations run natively in Python (`scikit-learn`, `numpy`, `scipy`). The frontend is a clean White + Blue professional interface built with Next.js and Tailwind CSS (no dark mode).
 
 ---
 
@@ -64,15 +65,15 @@ This platform provides an end-to-end laboratory where researchers and students c
 - **scikit-learn 1.4+**: Classification engines, cross-validation, and metrics.
 - **Pandas & NumPy**: High-performance tabular transformation and vector math.
 - **SQLAlchemy 2.0 & Alembic**: ORM and schema migration system.
-- **ReportLab**: Programmatic PDF compilation for formal research reports.
+- **ReportLab**: Programmatic PDF compilation for formal benchmark reports.
 - **SQLite / PostgreSQL**: Dual database support (SQLite local default, PostgreSQL for Docker).
 
 ### Frontend Interface
 - **Next.js 15 (App Router)** & **React 19**
 - **TypeScript** (strict mode enabled)
-- **Tailwind CSS**: Strict White + Blue professional academic design system.
+- **Tailwind CSS**: Modern White + Blue professional design system.
 - **Recharts**: Dynamic rendering of noise degradation curves.
-- **Lucide React**: Clean academic icons.
+- **Lucide React**: Clean modern icons.
 
 ---
 
@@ -97,9 +98,9 @@ robust-learning-label-noise/
 │       │   ├── datasets/        # Dataset catalog & inspection pages
 │       │   ├── experiments/     # Experiment registry, wizard, and results
 │       │   ├── analysis/        # Cross-experiment comparative charts
-│       │   ├── methodology/     # Literature foundations & viva FAQ
+│       │   ├── methodology/     # Theoretical foundations & technical FAQ
 │       │   ├── layout.tsx
-│       │   └── page.tsx         # Academic Dashboard
+│       │   └── page.tsx         # Platform Dashboard
 │       ├── components/          # Reusable UI & Chart components
 │       ├── lib/api.ts           # Typed API Client
 │       └── Dockerfile
@@ -262,19 +263,19 @@ Samples with $\text{Score}_i \ge \theta$ ($\theta = 0.50$ by default) are diagno
 ## 12. Publication-Grade PDF Reports
 
 Every completed experiment automatically generates a downloadable PDF containing:
-1. Academic project title and unique experiment identifier.
+1. Project title and unique experiment identifier.
 2. Dataset metadata, sample size, feature counts, and split ratios.
 3. Tabular model performance across all evaluated noise levels.
 4. Top diagnosed suspicious training records with confidence margins.
-5. Factual academic findings and methodological notes.
+5. Empirical findings and methodological notes.
 
 ---
 
-## 13. Limitations & Academic Discussion
+## 13. Limitations & Technical Discussion
 
 1. **Synthetic vs. Real Noise:** Synthetic noise injection simulates label noise under controlled conditions; real-world annotation noise may exhibit complex feature-dependent bias.
 2. **Conservative Pruning:** On small datasets with high noise ($\ge 40\%$), aggressive trimmed training can discard minority class samples, necessitating adaptive thresholding.
-3. **Statistical Repeats:** Single-seed trials provide exact reproducibility, but multi-seed repeats (`[42, 123, 456]`) are recommended for final viva and conference submissions.
+3. **Statistical Repeats:** Single-seed trials provide exact reproducibility, but multi-seed repeats (`[42, 123, 456]`) are recommended for formal benchmarking and production evaluations.
 
 ---
 

@@ -102,7 +102,7 @@ export function Logo({
           <span
             className={`font-bold tracking-widest uppercase text-blue-700/80 ${textSizes[size].sub}`}
           >
-            Academic Research Lab
+            Machine Learning Platform
           </span>
         </div>
       )}

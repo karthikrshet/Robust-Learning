@@ -6,7 +6,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: "Lead Researcher" | "Evaluator / Reviewer" | "Graduate Student" | "Professor";
+  role: "Lead ML Engineer" | "Senior Data Scientist" | "ML Research Scientist" | "Technical Evaluator" | string;
   institution: string;
   avatarSeed: string;
   token: string;
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ) => {
     // Real validation
     if (!email || !email.includes("@")) {
-      throw new Error("A valid academic or institutional email address is required.");
+      throw new Error("A valid email address is required.");
     }
     if (!password || password.trim().length < 6) {
       throw new Error("Password must be at least 6 characters.");
@@ -134,17 +134,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const quickLogin = async (preset: "researcher" | "evaluator") => {
     if (preset === "evaluator") {
       await login(
-        "eleanor.bennett@academic-evaluators.org",
+        "eleanor.bennett@evaluators.org",
         "evaluator2026!",
-        "Evaluator / Reviewer",
-        "Prof. Eleanor Bennett",
-        "Department of Computer Science Review Board"
+        "Technical Evaluator",
+        "Dr. Eleanor Bennett",
+        "ML Systems Evaluation Board"
       );
     } else {
       await login(
-        "alex.vance@academic-lab.edu",
+        "alex.vance@research-lab.org",
         "researcher2026!",
-        "Lead Researcher",
+        "Lead ML Engineer",
         "Dr. Alex Vance",
         "Machine Learning Robustness Laboratory"
       );

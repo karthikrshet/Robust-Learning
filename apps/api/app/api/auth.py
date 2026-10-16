@@ -8,11 +8,11 @@ from fastapi import APIRouter, HTTPException, Header, Depends, Response
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 class LoginRequest(BaseModel):
-    email: str = Field(..., description="Academic or institutional email")
+    email: str = Field(..., description="Corporate or institutional email")
     password: str = Field(..., description="Password (min 6 chars)")
-    role: Optional[str] = Field("Lead Researcher", description="Academic role")
+    role: Optional[str] = Field("Lead ML Engineer", description="User role")
     name: Optional[str] = Field(None, description="Full Name")
-    institution: Optional[str] = Field("Machine Learning Robustness Laboratory", description="Institution")
+    institution: Optional[str] = Field("Machine Learning Robustness Laboratory", description="Organization")
 
 class UserProfile(BaseModel):
     id: str
@@ -23,34 +23,34 @@ class UserProfile(BaseModel):
     avatar_seed: str
     token: str
 
-# Registered Verified Institutional Accounts
+# Registered Verified Accounts
 REGISTERED_RESEARCHERS = {
-    "eleanor.bennett@academic-evaluators.org": {
+    "eleanor.bennett@evaluators.org": {
         "password": "evaluator2026!",
-        "name": "Prof. Eleanor Bennett",
-        "role": "Evaluator / Reviewer",
-        "institution": "Department of Computer Science Review Board",
+        "name": "Dr. Eleanor Bennett",
+        "role": "Technical Evaluator",
+        "institution": "ML Systems Evaluation Board",
         "avatar_seed": "EB"
     },
-    "alex.vance@academic-lab.edu": {
+    "alex.vance@research-lab.org": {
         "password": "researcher2026!",
         "name": "Dr. Alex Vance",
-        "role": "Lead Researcher",
+        "role": "Lead ML Engineer",
         "institution": "Machine Learning Robustness Laboratory",
         "avatar_seed": "AV"
     },
     "chen.wei@stanford-ai.edu": {
         "password": "stanford2026!",
-        "name": "Prof. Wei Chen",
-        "role": "Professor",
-        "institution": "Stanford AI Robustness Group",
+        "name": "Dr. Wei Chen",
+        "role": "Senior ML Scientist",
+        "institution": "AI Robustness Group",
         "avatar_seed": "WC"
     },
     "sarah.jenkins@oxford-ml.ac.uk": {
         "password": "oxford2026!",
-        "name": "Sarah Jenkins, M.Sc.",
-        "role": "Graduate Student",
-        "institution": "Oxford Machine Learning Research Group",
+        "name": "Sarah Jenkins",
+        "role": "ML Research Engineer",
+        "institution": "Machine Learning Engineering Group",
         "avatar_seed": "SJ"
     }
 }
@@ -73,7 +73,7 @@ def login(payload: LoginRequest, response: Response):
     if len(pw_clean) < 6:
         raise HTTPException(status_code=400, detail="Password must be at least 6 characters.")
 
-    # 3. If pre-registered academic account, strictly verify password
+    # 3. If pre-registered verified account, strictly verify password
     if email_clean in REGISTERED_RESEARCHERS:
         acc = REGISTERED_RESEARCHERS[email_clean]
         if pw_clean != acc["password"]:

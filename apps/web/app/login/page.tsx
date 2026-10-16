@@ -23,9 +23,9 @@ function LoginFormContent() {
   const reason = searchParams.get("reason");
   const { login, quickLogin } = useAuth();
 
-  const [email, setEmail] = useState("alex.vance@academic-lab.edu");
+  const [email, setEmail] = useState("alex.vance@research-lab.org");
   const [password, setPassword] = useState("researcher2026!");
-  const [role, setRole] = useState<User["role"]>("Lead Researcher");
+  const [role, setRole] = useState<User["role"]>("Lead ML Engineer");
   const [name, setName] = useState("Dr. Alex Vance");
   const [institution, setInstitution] = useState("Machine Learning Robustness Laboratory");
   const [isLoading, setIsLoading] = useState(false);
@@ -197,16 +197,16 @@ function LoginFormContent() {
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-bold text-slate-700">Academic Role</label>
+              <label className="text-xs font-bold text-slate-700">Role</label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as User["role"])}
                 className="w-full text-xs px-3 py-2 bg-white rounded-lg border border-slate-200 text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
-                <option value="Lead Researcher">Lead Researcher</option>
-                <option value="Evaluator / Reviewer">Evaluator / Reviewer</option>
-                <option value="Professor">Professor / Project Guide</option>
-                <option value="Graduate Student">Graduate Student</option>
+                <option value="Lead ML Engineer">Lead ML Engineer</option>
+                <option value="Senior Data Scientist">Senior Data Scientist</option>
+                <option value="ML Research Scientist">ML Research Scientist</option>
+                <option value="Technical Evaluator">Technical Evaluator</option>
               </select>
             </div>
 

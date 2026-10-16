@@ -452,7 +452,7 @@ function ExperimentWizardContent() {
                     Repeated Trials across Multiple Random Seeds (Section 50)
                   </span>
                   <span className="text-[11px] text-slate-500">
-                    Executes seeds [42, 123, 456] and computes Mean ± Std deviation for academic rigor.
+                    Executes seeds [42, 123, 456] and computes Mean ± Std deviation for statistical confidence.
                   </span>
                 </div>
                 <input

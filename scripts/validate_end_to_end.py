@@ -131,7 +131,7 @@ def run_validation():
         print(f"  -> Highest Issue Score Sample: Row #{top_s['sample_id']} (Observed: {top_s['observed_label_name']}, Predicted: {top_s['predicted_label_name']}, Score: {top_s['issue_score']:.4f})")
 
     # 6. Verify Findings
-    print("\n[6/7] Factual Academic Findings Generated:")
+    print("\n[6/7] Empirical Evaluation Findings Generated:")
     for f in res["findings"]:
         print(f"  -> [{f['category']}] {f['finding']}")
 

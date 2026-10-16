@@ -58,7 +58,7 @@ class ExperimentConfig:
 
 class ExperimentRunner:
     """
-    Master Experiment Orchestrator executing the complete academic methodology:
+    Master Experiment Orchestrator executing the complete robust learning methodology:
     1. Preprocessing & Clean Split
     2. Controlled Label Noise Injection (Train only)
     3. Confident Learning Label Issue Detection
@@ -147,7 +147,7 @@ class ExperimentRunner:
                     corrupted_indices=noise_res.corrupted_indices
                 )
 
-                # If this is the highest or primary noise level (e.g. 20% or max), store suspicious samples for viva inspection
+                # If this is the highest or primary noise level (e.g. 20% or max), store suspicious samples for audit inspection
                 if not primary_suspicious_samples or noise_level == 0.20 or (noise_level > 0 and len(primary_suspicious_samples) == 0):
                     primary_suspicious_samples = detection_res["samples"]
 

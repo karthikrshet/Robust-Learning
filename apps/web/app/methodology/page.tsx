@@ -17,8 +17,8 @@ export default function MethodologyPage() {
   return (
     <div className="min-h-screen">
       <Header
-        title="Academic Methodology & Literature Foundation"
-        subtitle="Theoretical foundations, mathematical formulations, and viva demonstration guide."
+        title="Theoretical Methodology & Literature Foundation"
+        subtitle="Mathematical formulations, algorithmic architecture, and empirical validation guide."
       />
 
       <div className="p-8 max-w-5xl mx-auto space-y-10">
@@ -136,11 +136,11 @@ export default function MethodologyPage() {
           </div>
         </div>
 
-        {/* Viva Q&A Guide */}
+        {/* Technical FAQ & Validation Guide */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs space-y-4">
           <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
             <HelpCircle className="w-5 h-5 text-blue-600" />
-            Evaluation & Viva Defense FAQ
+            Empirical Validation &amp; Technical FAQ
           </h3>
 
           <div className="space-y-3 divide-y divide-slate-100 text-xs">
@@ -169,7 +169,7 @@ export default function MethodologyPage() {
                 Q3: Does the robust model always outperform the baseline model at every noise level?
               </span>
               <p className="text-slate-600 leading-relaxed">
-                No, and an honest academic tool must report actual findings. At 0% clean noise, standard baselines often perform marginally better
+                No, and an empirically grounded system must report actual findings. At 0% clean noise, standard baselines often perform marginally better
                 because down-weighting or pruning discard genuine edge-case boundary samples. However, as label noise increases (10% to 30%),
                 conventional classifiers suffer severe degradation while robust classifiers maintain significantly higher F1-scores.
               </p>

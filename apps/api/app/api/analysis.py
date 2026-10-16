@@ -35,7 +35,7 @@ def compare_experiments(
 
 @router.get("/methodology")
 def get_methodology_guide():
-    """Returns grounded academic methodology explanations for viva and demonstration."""
+    """Returns grounded methodology explanations and technical documentation."""
     return {
         "title": "Robust Learning Under Label Noise: Theoretical & Algorithmic Foundation",
         "sections": [
@@ -75,7 +75,7 @@ def get_methodology_guide():
                 )
             },
             {
-                "heading": "5. Academic Evaluation & Non-Manufactured Findings",
+                "heading": "5. Empirical Evaluation & Objective Findings",
                 "content": (
                     "Every metric (Accuracy, Precision, Recall, F1-Score, Confusion Matrix) is computed directly from true test labels and model predictions. "
                     "The platform never fabricates results or guarantees robust superiority; findings honestly reflect whether robust learning "

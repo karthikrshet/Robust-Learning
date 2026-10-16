@@ -133,7 +133,7 @@ def get_suspicious_labels(
 
 @router.get("/{experiment_id}/report")
 def download_pdf_report(experiment_id: str, db: Session = Depends(get_db)):
-    """Downloads the formal publication-ready academic PDF experiment report."""
+    """Downloads the formal publication-ready PDF experiment report."""
     exp = ExperimentService.get_experiment(db, experiment_id)
     if not exp.report_pdf_path or not os.path.exists(exp.report_pdf_path):
         raise HTTPException(status_code=404, detail="PDF report not found or experiment not completed.")

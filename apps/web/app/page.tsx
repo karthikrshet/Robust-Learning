@@ -81,7 +81,7 @@ export default function LandingPage() {
   const [selectedDegradationNoise, setSelectedDegradationNoise] = useState<number>(20);
 
   // Interactive Methodology Tab
-  const [activeMethodTab, setActiveMethodTab] = useState<"noise" | "detection" | "robust" | "viva">("detection");
+  const [activeMethodTab, setActiveMethodTab] = useState<"noise" | "detection" | "robust" | "validation">("detection");
 
   useEffect(() => {
     setMounted(true);
@@ -141,7 +141,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900 font-sans">
-      {/* Top Academic Navigation Bar */}
+      {/* Top Navigation Bar */}
       <header className="h-20 border-b border-slate-200 bg-white/95 backdrop-blur-md sticky top-0 z-40 px-6 sm:px-12 flex items-center justify-between shadow-2xs">
         <Logo size="md" href="/" />
 
@@ -184,7 +184,7 @@ export default function LandingPage() {
             className="hover:text-blue-600 transition-colors flex items-center gap-1.5 text-slate-700"
           >
             <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-            <span>Methodology &amp; Viva</span>
+            <span>Methodology &amp; Architecture</span>
           </Link>
         </nav>
 
@@ -248,11 +248,11 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative pt-16 pb-20 overflow-hidden border-b border-slate-200 bg-gradient-to-b from-blue-50/50 via-white to-white">
         <div className="max-w-6xl mx-auto px-6 space-y-8">
-          {/* Top Academic Tag & Security Indicator */}
+          {/* Top Technical Tag & Security Indicator */}
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-100/70 border border-blue-200 text-blue-900 text-xs font-bold shadow-2xs">
               <GraduationCap className="w-4 h-4 text-blue-700" />
-              <span>Academic ML Research Laboratory • Controlled Noise Benchmarking</span>
+              <span>Machine Learning Engineering Lab • Controlled Noise Benchmarking</span>
             </div>
 
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
@@ -297,7 +297,7 @@ export default function LandingPage() {
               className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl border border-blue-200 bg-blue-50/70 hover:bg-blue-100 text-blue-900 text-sm font-bold shadow-2xs transition-all"
             >
               <BookOpen className="w-4 h-4 text-blue-600" />
-              <span>Mathematical Methodology &amp; Viva Defense</span>
+              <span>Mathematical Methodology &amp; Architecture</span>
             </Link>
           </div>
 
@@ -506,7 +506,7 @@ export default function LandingPage() {
             Four Core Pillars of Robust Learning
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-            Every component adheres to peer-reviewed academic literature. Explore each phase of our robust classification methodology below.
+            Every component is grounded in established machine learning literature. Explore each phase of our robust classification methodology below.
           </p>
         </div>
 
@@ -538,12 +538,12 @@ export default function LandingPage() {
               3. Noise-Resistant Classifiers
             </button>
             <button
-              onClick={() => setActiveMethodTab("viva")}
+              onClick={() => setActiveMethodTab("validation")}
               className={`px-4 py-2 rounded-lg transition-all cursor-pointer ${
-                activeMethodTab === "viva" ? "bg-white text-blue-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
+                activeMethodTab === "validation" ? "bg-white text-blue-700 shadow-xs" : "text-slate-600 hover:text-slate-900"
               }`}
             >
-              4. Academic Viva Defense
+              4. Empirical Validation &amp; FAQ
             </button>
           </div>
         </div>
@@ -662,7 +662,7 @@ export default function LandingPage() {
             </div>
           )}
 
-          {activeMethodTab === "viva" && (
+          {activeMethodTab === "validation" && (
             <div className="space-y-6">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-black">
@@ -670,10 +670,10 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-slate-900">
-                    Academic Viva &amp; Thesis Defense Readiness
+                    Empirical Validation &amp; Architecture FAQ
                   </h3>
                   <span className="text-xs text-slate-500 font-mono">
-                    Peer-Reviewed Evaluation Standards
+                    Evaluation Standards &amp; Robustness
                   </span>
                 </div>
               </div>
@@ -703,7 +703,7 @@ export default function LandingPage() {
                   href="/methodology"
                   className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1.5"
                 >
-                  <span>Read Full 10-Question Defense Guide &amp; Citations</span>
+                  <span>Read Full Technical Guide &amp; Citations</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </Link>
 
@@ -881,7 +881,7 @@ export default function LandingPage() {
             Access Control &amp; Reproducibility
           </span>
           <h2 className="text-3xl font-black text-slate-900 tracking-tight">
-            Protected Academic Research Environments
+            Protected Evaluation &amp; Benchmarking Environments
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
             To prevent unverified tampering of experiments and maintain deterministic seed provenance, access to training pipelines is restricted to authenticated researchers.
@@ -896,7 +896,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-sm font-bold text-slate-900">Evaluator / Reviewer</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Pre-configured for external project evaluators, academic review committees, and viva examiners to inspect live execution logs, confusion matrices, and audit reports.
+                Pre-configured for machine learning engineers, peer reviewers, and technical evaluators to inspect live execution logs, confusion matrices, and audit reports.
               </p>
             </div>
             <button
@@ -989,7 +989,7 @@ export default function LandingPage() {
           </div>
 
           <div className="text-[11px] text-slate-400 font-medium">
-            Academic Research Platform • MIT Licensed • Built with Python &amp; Next.js
+            Robust Machine Learning Platform • MIT Licensed • Built with Python &amp; Next.js
           </div>
         </div>
       </footer>

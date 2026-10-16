@@ -50,7 +50,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             Authentication Required
           </h2>
           <p className="text-xs text-slate-600 leading-relaxed">
-            The research laboratory, dataset catalog, and model training pipelines are restricted to authenticated researchers, evaluators, and academic reviewers.
+            The research laboratory, dataset catalog, and model training pipelines are restricted to authenticated ML engineers, evaluators, and researchers.
           </p>
         </div>
 

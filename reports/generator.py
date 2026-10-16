@@ -19,7 +19,7 @@ from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT
 
 class ExperimentReportGenerator:
     """
-    Generates academic-quality, publication-ready PDF evaluation reports
+    Generates professional, publication-grade PDF evaluation reports
     from real experiment results.
     """
     @classmethod
@@ -242,8 +242,8 @@ class ExperimentReportGenerator:
             story.append(t_susp)
             story.append(Spacer(1, 10))
 
-        # 4. Factual Academic Findings
-        story.append(Paragraph("4. Academic Findings & Discussion", h2_style))
+        # 4. Empirical Findings
+        story.append(Paragraph("4. Empirical Findings & Discussion", h2_style))
         findings = experiment_data.get("findings", [])
         if findings:
             for f in findings:
@@ -259,7 +259,7 @@ class ExperimentReportGenerator:
         repro_text = (
             "<b>Reproducibility:</b> Results are strictly deterministic given the configured random seed and split ratios. "
             "Label noise was applied solely to the training set; test labels remained unaltered to ensure valid evaluation. "
-            "<br/><b>Academic Note:</b> Confident learning scores indicate statistical discrepancy between observed labels and feature density; "
+            "<br/><b>Technical Note:</b> Confident learning scores indicate statistical discrepancy between observed labels and feature density; "
             "they represent potential label noise, not mathematical proof of label error in uncontrolled environments."
         )
         story.append(Paragraph(repro_text, small_style))

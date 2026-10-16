@@ -67,7 +67,7 @@ export default function DashboardPage() {
       />
 
       <div className="p-8 max-w-7xl mx-auto space-y-8">
-        {/* Academic Hero Banner */}
+        {/* Overview Hero Banner */}
         <div className="bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 rounded-2xl p-8 text-white shadow-md relative overflow-hidden">
           <div className="max-w-2xl relative z-10 space-y-4">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/30 text-blue-100 text-xs font-semibold backdrop-blur-xs border border-blue-400/30">
@@ -282,7 +282,7 @@ export default function DashboardPage() {
                 href="/methodology"
                 className="inline-flex items-center gap-1 text-xs font-bold text-blue-700 hover:text-blue-900"
               >
-                Read academic formulation <ArrowRight className="w-3.5 h-3.5" />
+                Read technical formulation <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
