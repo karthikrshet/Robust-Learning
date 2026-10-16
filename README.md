@@ -9,7 +9,6 @@
 
 A complete, production-grade academic machine learning platform designed to study, detect, and mitigate the detrimental effects of label noise in supervised classification datasets. 
 
-Developed strictly in accordance with academic research standards: **no mock data, no fake metrics, no hardcoded charts, and 100% computed results**.
 
 ---
 
