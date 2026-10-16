@@ -132,6 +132,7 @@ robust-learning-label-noise/
 - Python 3.10 or higher
 - Node.js 18 or higher (Node v20+ recommended)
 - npm 9+
+- *(For complete laptop requirements and official download links, see [PREREQUISITES.md](PREREQUISITES.md).)*
 
 ### 1. Clone & Set Up Environment
 ```bash
