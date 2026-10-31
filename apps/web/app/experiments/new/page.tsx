@@ -81,6 +81,13 @@ function ExperimentWizardContent() {
           } else if (found.target_column) {
             setTargetColumn(found.target_column);
             validateTarget(found.id, found.target_column);
+          } else {
+            const validCandidate = found.inspection_data.columns.find(
+              (c) => c.unique_values >= 2 && c.unique_values <= 20
+            );
+            const t = validCandidate ? validCandidate.name : found.inspection_data.columns[found.inspection_data.columns.length - 1].name;
+            setTargetColumn(t);
+            validateTarget(found.id, t);
           }
         }
       }
@@ -91,7 +98,10 @@ function ExperimentWizardContent() {
     setSelectedDatasetId(d.id);
     setSelectedDataset(d);
     setName(`${d.name} Noise Robustness Evaluation`);
-    const t = d.target_column || d.inspection_data.columns[d.inspection_data.columns.length - 1].name;
+    const validCandidate = d.inspection_data.columns.find(
+      (c) => c.unique_values >= 2 && c.unique_values <= 20
+    );
+    const t = d.target_column || (validCandidate ? validCandidate.name : d.inspection_data.columns[d.inspection_data.columns.length - 1].name);
     setTargetColumn(t);
     validateTarget(d.id, t);
   };
@@ -104,7 +114,7 @@ function ExperimentWizardContent() {
       setTargetInfo(info);
     } catch (e: any) {
       setTargetInfo(null);
-      setError(e.message);
+      setError(e.message || "Selected column is not a valid classification target.");
     }
   };
 
@@ -304,13 +314,28 @@ function ExperimentWizardContent() {
                 onChange={(e) => validateTarget(selectedDataset.id, e.target.value)}
                 className="w-full text-xs bg-white border border-slate-200 rounded-lg px-3 py-2.5 font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
-                {selectedDataset.inspection_data.columns.map((col) => (
-                  <option key={col.name} value={col.name}>
-                    {col.name} ({col.dtype})
-                  </option>
-                ))}
+                {selectedDataset.inspection_data.columns.map((col) => {
+                  const status =
+                    col.unique_values === 1
+                      ? "[Invalid: 1 class only]"
+                      : col.unique_values > 30
+                      ? `[Invalid: ${col.unique_values} values (high-cardinality/ID)]`
+                      : `[Valid: ${col.unique_values} classes]`;
+                  return (
+                    <option key={col.name} value={col.name}>
+                      {col.name} ({col.dtype}) — {status}
+                    </option>
+                  );
+                })}
               </select>
             </div>
+
+            {error && (
+              <div className="p-4 rounded-xl border border-rose-200 bg-rose-50/70 space-y-1">
+                <span className="text-xs font-bold text-rose-800 block">Ineligible Target Column</span>
+                <p className="text-xs text-rose-600 leading-relaxed">{error}</p>
+              </div>
+            )}
 
             {targetInfo && (
               <div className="p-4 rounded-xl border border-blue-200 bg-blue-50/40 space-y-3">

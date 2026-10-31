@@ -127,9 +127,18 @@ class ExperimentReportGenerator:
         split_info = experiment_data.get("split_info", {})
         cfg = experiment_data.get("config", {})
 
+        raw_classes = [str(c) for c in ds_info.get("classes", [])]
+        num_classes = ds_info.get("num_classes", len(raw_classes))
+        if len(raw_classes) > 6:
+            classes_display = f"{num_classes} ({', '.join(raw_classes[:5])}, +{len(raw_classes)-5} more)"
+        elif raw_classes:
+            classes_display = f"{num_classes} ({', '.join(raw_classes)})"
+        else:
+            classes_display = str(num_classes)
+
         overview_data = [
             [Paragraph("<b>Target Variable:</b>", body_style), Paragraph(str(cfg.get("target_column", "N/A")), body_style),
-             Paragraph("<b>Classes:</b>", body_style), Paragraph(f"{ds_info.get('num_classes', 0)} ({', '.join(ds_info.get('classes', []))})", body_style)],
+             Paragraph("<b>Classes:</b>", body_style), Paragraph(classes_display, body_style)],
             [Paragraph("<b>Total Rows:</b>", body_style), Paragraph(str(ds_info.get("total_rows", "N/A")), body_style),
              Paragraph("<b>Preprocessed Features:</b>", body_style), Paragraph(str(ds_info.get("features_count", "N/A")), body_style)],
             [Paragraph("<b>Train / Test Split:</b>", body_style), Paragraph(f"{split_info.get('train_samples', 'N/A')} ({int(split_info.get('train_ratio', 0.7)*100)}%) / {split_info.get('test_samples', 'N/A')} ({int(split_info.get('test_ratio', 0.3)*100)}%)", body_style),

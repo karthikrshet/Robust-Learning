@@ -25,6 +25,30 @@ class ExperimentService:
         if not dataset:
             raise HTTPException(status_code=404, detail="Dataset not found.")
 
+        if not os.path.exists(dataset.file_path):
+            raise HTTPException(status_code=404, detail="Dataset file missing on storage.")
+
+        # Validate target column suitability before queuing execution
+        ext = os.path.splitext(dataset.filename)[1].lower()
+        try:
+            if ext in [".csv", ".txt"]:
+                target_df = pd.read_csv(dataset.file_path, usecols=[schema.target_column], low_memory=False)
+            elif ext in [".xlsx", ".xls"]:
+                target_df = pd.read_excel(dataset.file_path, usecols=[schema.target_column])
+            else:
+                target_df = pd.read_parquet(dataset.file_path, columns=[schema.target_column])
+        except Exception:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Target column '{schema.target_column}' does not exist in dataset '{dataset.name}'."
+            )
+
+        from ml.preprocessing.loader import DatasetLoader, DatasetValidationError
+        try:
+            DatasetLoader.validate_and_inspect_target(target_df, schema.target_column)
+        except DatasetValidationError as e:
+            raise HTTPException(status_code=400, detail=str(e))
+
         exp_id = str(uuid.uuid4())
         config_data = schema.model_dump()
 

@@ -47,7 +47,13 @@ export default function DatasetDetailPage({ params }: { params: Promise<{ id: st
       const prev = await api.getDatasetPreview(datasetId, 50);
       setPreview(prev);
 
-      const initialTarget = ds.target_column || ds.inspection_data.target_info?.target_column || prev.columns[prev.columns.length - 1];
+      const validCandidate = ds.inspection_data?.columns?.find(
+        (c: any) => c.unique_values >= 2 && c.unique_values <= 30
+      );
+      const initialTarget =
+        ds.target_column ||
+        ds.inspection_data?.target_info?.target_column ||
+        (validCandidate ? validCandidate.name : prev.columns[prev.columns.length - 1]);
       if (initialTarget) {
         setSelectedTarget(initialTarget);
         validateTarget(initialTarget);
@@ -143,11 +149,19 @@ export default function DatasetDetailPage({ params }: { params: Promise<{ id: st
                 onChange={(e) => validateTarget(e.target.value)}
                 className="text-xs bg-white border border-slate-200 rounded-lg px-3 py-1.5 font-semibold text-slate-800 focus:outline-hidden focus:ring-2 focus:ring-blue-500/20"
               >
-                {insp.columns.map((col) => (
-                  <option key={col.name} value={col.name}>
-                    {col.name} ({col.dtype})
-                  </option>
-                ))}
+                {insp.columns.map((col) => {
+                  const status =
+                    col.unique_values === 1
+                      ? "[Invalid: 1 class only]"
+                      : col.unique_values > 30
+                      ? `[Invalid: ${col.unique_values} values]`
+                      : `[Valid: ${col.unique_values} classes]`;
+                  return (
+                    <option key={col.name} value={col.name}>
+                      {col.name} ({col.dtype}) — {status}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           </div>

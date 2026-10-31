@@ -88,9 +88,30 @@ class TabularPreprocessor:
         # Drop rows where target is missing
         data = data.dropna(subset=[self.config.target_column]).reset_index(drop=True)
 
-        target_series = data[self.config.target_column].astype(str)
+        orig_target = data[self.config.target_column]
+        if pd.api.types.is_float_dtype(orig_target) and orig_target.nunique() > 20:
+            raise ValueError(
+                f"Target column '{self.config.target_column}' appears to be a continuous numeric variable "
+                f"({orig_target.nunique()} distinct values). This platform is designed for classification tasks."
+            )
+
+        target_series = orig_target.astype(str)
         y = self.label_encoder.fit_transform(target_series)
         self.class_names = [str(c) for c in self.label_encoder.classes_]
+        
+        if len(self.class_names) < 2:
+            raise ValueError(
+                f"Target column '{self.config.target_column}' contains only {len(self.class_names)} distinct class "
+                f"({self.class_names}). Classification requires at least 2 distinct classes."
+            )
+
+        if len(self.class_names) > 50:
+            raise ValueError(
+                f"Target column '{self.config.target_column}' contains {len(self.class_names)} distinct values "
+                f"(such as timestamps, IDs, or freeform text). Supervised classification supports up to 50 classes. "
+                "Please choose a categorical or binary label column."
+            )
+
         self.class_to_idx = {c: int(i) for i, c in enumerate(self.class_names)}
         self.idx_to_class = {int(i): c for i, c in enumerate(self.class_names)}
 

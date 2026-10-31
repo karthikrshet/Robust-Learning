@@ -32,6 +32,18 @@ def test_target_validation_rejects_continuous():
     with pytest.raises(DatasetValidationError, match="continuous numerical variable"):
         DatasetLoader.validate_and_inspect_target(df, "target")
 
+def test_target_validation_rejects_high_cardinality():
+    df = pd.DataFrame({"x": range(60), "target": [f"ID_{i}" for i in range(60)]})
+    with pytest.raises(DatasetValidationError, match="at most 30 classes"):
+        DatasetLoader.validate_and_inspect_target(df, "target")
+
+def test_tabular_preprocessor_rejects_single_class():
+    df = pd.DataFrame({"x": [1, 2, 3], "target": ["A", "A", "A"]})
+    cfg = PreprocessingConfig(target_column="target")
+    preprocessor = TabularPreprocessor(cfg)
+    with pytest.raises(ValueError, match="requires at least 2 distinct classes"):
+        preprocessor.fit_transform(df)
+
 def test_tabular_preprocessor_pipeline():
     df = pd.DataFrame({
         "num1": [10.0, 20.0, np.nan, 40.0, 10.0],

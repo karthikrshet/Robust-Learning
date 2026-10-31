@@ -240,11 +240,17 @@ class DatasetLoader:
                 "Classification requires at least 2 distinct classes."
             )
 
-        # Guard against continuous regression targets
+        # Guard against continuous regression targets or high-cardinality text/id columns
         if pd.api.types.is_float_dtype(series) and num_classes > 20:
             raise DatasetValidationError(
                 f"Target column '{target_column}' appears to be a continuous numerical variable "
                 f"with {num_classes} distinct floating values. This platform is designed for classification tasks."
+            )
+
+        if num_classes > 30:
+            raise DatasetValidationError(
+                f"Target column '{target_column}' has {num_classes} distinct values (such as an ID, email, timestamp, or free-text column). "
+                "Supervised classification requires a categorical target with at most 30 classes."
             )
 
         # Class distribution
